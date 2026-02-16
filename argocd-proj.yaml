@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: example-app
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: Example App Project
+  sourceRepos:
+  - 'https://github.com/user/LFS256-code.git'
+  destinations:
+  - namespace: example-app
+    server: https://kubernetes.default.svc
+  namespaceResourceWhitelist:
+  - group: 'apps'
+    kind: Deployment
+  - group: ''
+    kind: Service

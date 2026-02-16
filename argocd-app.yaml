@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd-app
+  namespace: argocd
+spec:
+  project: example-app
+  source:
+    repoURL: https://github.com/user/LFS256-code.git
+    targetRevision: HEAD
+    path: argocd/example-app
+    ref: main
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: example-app
+  syncPolicy:
+    automated:
+      enabled: true
+      selfHeal: true
+    syncOptions:
+    - PrunePropagationPolicy=foreground 
+    - ApplyOutOfSyncOnly=true
+  retry:
+    limit: 5
+    backoff:
+      duration: 5s
+      factor: 2
+      maxDuration: 5m
